@@ -1,0 +1,556 @@
+{
+ "key": "omo",
+ "name": "Omo Forest Reserve",
+ "state": "Ogun",
+ "boundary_note": "World Database on Protected Areas polygon, site 36820, designation Forest Reserve. No gazette was consulted.",
+ "reported_ha": 130600,
+ "wdpa_id": 36820,
+ "wdpa_desig": "Forest Reserve",
+ "bounds": [
+  4.176,
+  6.5933,
+  4.5703,
+  7.0903
+ ],
+ "centroid": [
+  6.8747,
+  4.3515
+ ],
+ "area_ha": 131907,
+ "ring_ha": 108991,
+ "gfc": {
+  "threshold_pct": 30,
+  "years": [
+   2001,
+   2002,
+   2003,
+   2004,
+   2005,
+   2006,
+   2007,
+   2008,
+   2009,
+   2010,
+   2011,
+   2012,
+   2013,
+   2014,
+   2015,
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "inside": {
+   "canopy30": {
+    "base_ha": 104678,
+    "base_pct_of_zone": 79.4,
+    "loss_by_year_ha": [
+     206,
+     1346,
+     174,
+     185,
+     252,
+     225,
+     102,
+     427,
+     353,
+     342,
+     381,
+     927,
+     392,
+     201,
+     120,
+     369,
+     602,
+     821,
+     1258,
+     661,
+     700,
+     225,
+     181,
+     198,
+     990
+    ],
+    "loss_total_ha": 11636,
+    "loss_total_pct": 11.1,
+    "loss_recent_ha_per_yr": 459,
+    "loss_recent_pct_per_yr": 0.44,
+    "loss_mean_pct_per_yr": 0.44
+   },
+   "any": {
+    "base_ha": 131907,
+    "base_pct_of_zone": 100.0,
+    "loss_by_year_ha": [
+     215,
+     1364,
+     176,
+     189,
+     258,
+     230,
+     109,
+     437,
+     371,
+     358,
+     390,
+     941,
+     452,
+     273,
+     318,
+     611,
+     1269,
+     1190,
+     1440,
+     863,
+     977,
+     310,
+     271,
+     409,
+     1499
+    ],
+    "loss_total_ha": 14920,
+    "loss_total_pct": 11.3,
+    "loss_recent_ha_per_yr": 693,
+    "loss_recent_pct_per_yr": 0.53,
+    "loss_mean_pct_per_yr": 0.45
+   },
+   "mean_canopy2000_pct": 42.0,
+   "canopy10_ha": 131776
+  },
+  "ring": {
+   "canopy30": {
+    "base_ha": 81598,
+    "base_pct_of_zone": 74.9,
+    "loss_by_year_ha": [
+     149,
+     398,
+     142,
+     47,
+     173,
+     140,
+     118,
+     410,
+     236,
+     206,
+     249,
+     337,
+     148,
+     211,
+     209,
+     504,
+     640,
+     376,
+     333,
+     601,
+     470,
+     263,
+     716,
+     443,
+     1434
+    ],
+    "loss_total_ha": 8952,
+    "loss_total_pct": 11.0,
+    "loss_recent_ha_per_yr": 665,
+    "loss_recent_pct_per_yr": 0.82,
+    "loss_mean_pct_per_yr": 0.44
+   },
+   "any": {
+    "base_ha": 108991,
+    "base_pct_of_zone": 100.0,
+    "loss_by_year_ha": [
+     165,
+     435,
+     146,
+     53,
+     188,
+     150,
+     142,
+     433,
+     278,
+     235,
+     274,
+     373,
+     273,
+     494,
+     570,
+     934,
+     1806,
+     960,
+     671,
+     1059,
+     905,
+     521,
+     1151,
+     919,
+     2656
+    ],
+    "loss_total_ha": 15791,
+    "loss_total_pct": 14.5,
+    "loss_recent_ha_per_yr": 1230,
+    "loss_recent_pct_per_yr": 1.13,
+    "loss_mean_pct_per_yr": 0.58
+   },
+   "mean_canopy2000_pct": 41.3,
+   "canopy10_ha": 108772
+  }
+ },
+ "edge": {
+  "within_1km": {
+   "area_pct": 14.0,
+   "recent_loss_pct": 10.7
+  },
+  "within_2km": {
+   "area_pct": 27.1,
+   "recent_loss_pct": 21.8
+  },
+  "within_5km": {
+   "area_pct": 60.3,
+   "recent_loss_pct": 54.7
+  }
+ },
+ "tmf": {
+  "classes": {
+   "10": {
+    "label": "Undisturbed moist forest",
+    "ha": 21881,
+    "pct": 16.6
+   },
+   "20": {
+    "label": "Degraded moist forest",
+    "ha": 61025,
+    "pct": 46.3
+   },
+   "30": {
+    "label": "Forest regrowth",
+    "ha": 14766,
+    "pct": 11.2
+   },
+   "41": {
+    "label": "Deforested, now plantation",
+    "ha": 22,
+    "pct": 0.0
+   },
+   "42": {
+    "label": "Deforested, now water",
+    "ha": 1,
+    "pct": 0.0
+   },
+   "43": {
+    "label": "Deforested, other land",
+    "ha": 10680,
+    "pct": 8.1
+   },
+   "50": {
+    "label": "Disturbance under way (2023-2025)",
+    "ha": 1503,
+    "pct": 1.1
+   },
+   "60": {
+    "label": "Water",
+    "ha": 0,
+    "pct": 0.0
+   },
+   "70": {
+    "label": "Other land cover",
+    "ha": 22028,
+    "pct": 16.7
+   }
+  },
+  "moist_forest_domain_ha": 109878,
+  "moist_forest_domain_pct": 83.3,
+  "years": [
+   1990,
+   1991,
+   1992,
+   1993,
+   1994,
+   1995,
+   1996,
+   1997,
+   1998,
+   1999,
+   2000,
+   2001,
+   2002,
+   2003,
+   2004,
+   2005,
+   2006,
+   2007,
+   2008,
+   2009,
+   2010,
+   2011,
+   2012,
+   2013,
+   2014,
+   2015,
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "deforestation_by_year_ha": [
+   10,
+   39,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   1,
+   67,
+   2794,
+   99,
+   408,
+   197,
+   42,
+   610,
+   177,
+   982,
+   270,
+   176,
+   181,
+   480,
+   81,
+   953,
+   657,
+   2165,
+   5287,
+   2495,
+   1498,
+   1350,
+   2335,
+   410,
+   852,
+   342,
+   295,
+   79
+  ],
+  "degradation_by_year_ha": [
+   80,
+   222,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   2,
+   129,
+   26505,
+   618,
+   2011,
+   326,
+   67,
+   1344,
+   505,
+   8276,
+   1427,
+   511,
+   478,
+   1686,
+   214,
+   1151,
+   211,
+   823,
+   6411,
+   3301,
+   2097,
+   1271,
+   2912,
+   595,
+   3471,
+   240,
+   186,
+   763
+  ],
+  "last_year": 2025,
+  "undisturbed_pct_inside": 16.6,
+  "standing_forest_pct_inside": 74.0,
+  "undisturbed_pct_ring": 27.8,
+  "standing_forest_pct_ring": 66.0,
+  "deforestation_recent_ha_per_yr": 396,
+  "deforestation_10yr_ha_per_yr": 1494
+ },
+ "worldcover": {
+  "10": {
+   "label": "Tree cover",
+   "ha": 128827,
+   "pct": 97.7
+  },
+  "20": {
+   "label": "Shrubland",
+   "ha": 528,
+   "pct": 0.4
+  },
+  "30": {
+   "label": "Grassland",
+   "ha": 1991,
+   "pct": 1.5
+  },
+  "40": {
+   "label": "Cropland",
+   "ha": 19,
+   "pct": 0.0
+  },
+  "50": {
+   "label": "Built-up",
+   "ha": 512,
+   "pct": 0.4
+  },
+  "60": {
+   "label": "Bare or sparse",
+   "ha": 7,
+   "pct": 0.0
+  },
+  "80": {
+   "label": "Water",
+   "ha": 21,
+   "pct": 0.0
+  },
+  "90": {
+   "label": "Herbaceous wetland",
+   "ha": 1,
+   "pct": 0.0
+  },
+  "95": {
+   "label": "Mangrove",
+   "ha": 0,
+   "pct": 0.0
+  }
+ },
+ "canopy_height": {
+  "mean_m": 18.0,
+  "median_m": 18.0,
+  "p90_m": 24.0,
+  "pct_ge_5m": 100.0,
+  "pct_ge_15m": 80.1,
+  "pct_ge_25m": 7.3
+ },
+ "biomass": {
+  "mean_t_per_ha": 78.1,
+  "ring_mean_t_per_ha": 72.1,
+  "mean_sd_t_per_ha": 49.0,
+  "p90_t_per_ha": 135.0,
+  "total_agb_mt": 10.29,
+  "total_agb_sd_mt": 6.46,
+  "carbon_mtc": 4.84,
+  "carbon_sd_mtc": 3.03,
+  "co2e_mt": 17.7,
+  "co2e_sd_mt": 11.1,
+  "relative_sd_pct": 63,
+  "by_class": {
+   "Undisturbed moist forest": {
+    "pixels": 7187,
+    "mean_t_per_ha": 100.1,
+    "sd_between_pixels": 32.8,
+    "mean_map_sd": 61.9,
+    "co2e_t_per_ha": 173
+   },
+   "Degraded moist forest": {
+    "pixels": 26659,
+    "mean_t_per_ha": 93.0,
+    "sd_between_pixels": 40.0,
+    "mean_map_sd": 59.9,
+    "co2e_t_per_ha": 160
+   },
+   "Forest regrowth": {
+    "pixels": 1861,
+    "mean_t_per_ha": 48.6,
+    "sd_between_pixels": 23.3,
+    "mean_map_sd": 29.0,
+    "co2e_t_per_ha": 84
+   },
+   "Deforested": {
+    "pixels": 2819,
+    "mean_t_per_ha": 42.7,
+    "sd_between_pixels": 21.8,
+    "mean_map_sd": 26.0,
+    "co2e_t_per_ha": 74
+   },
+   "Other land cover": {
+    "pixels": 13973,
+    "mean_t_per_ha": 67.9,
+    "sd_between_pixels": 44.2,
+    "mean_map_sd": 41.7,
+    "co2e_t_per_ha": 117
+   }
+  },
+  "class_source": "JRC tropical moist forest classes"
+ },
+ "sentinel2": {
+  "scene": "S2A_31NFH_20241130_0_L2A",
+  "date": "2024-11-30",
+  "cloud_pct": 0.025809,
+  "ndvi_mean": 0.757,
+  "ndvi_by_class": {
+   "Undisturbed moist forest": {
+    "pixels": 268090,
+    "p10": 0.723,
+    "median": 0.77,
+    "p90": 0.795
+   },
+   "Degraded moist forest": {
+    "pixels": 827058,
+    "p10": 0.743,
+    "median": 0.775,
+    "p90": 0.797
+   },
+   "Forest regrowth": {
+    "pixels": 130129,
+    "p10": 0.745,
+    "median": 0.78,
+    "p90": 0.802
+   },
+   "Deforested": {
+    "pixels": 120254,
+    "p10": 0.619,
+    "median": 0.736,
+    "p90": 0.785
+   },
+   "Other land cover": {
+    "pixels": 347416,
+    "p10": 0.621,
+    "median": 0.749,
+    "p90": 0.787
+   }
+  }
+ },
+ "indicative": {
+  "baseline_ha_per_yr": [
+   396,
+   1494
+  ],
+  "emission_factor_tco2_per_ha": [
+   87,
+   99
+  ],
+  "gross_tco2_per_yr": [
+   34327,
+   147785
+  ],
+  "credits_per_yr": [
+   10298,
+   72415
+  ],
+  "revenue_usd_per_yr": [
+   51490,
+   724149
+  ],
+  "assumptions": "Above-ground biomass only. Deductions of 30-40% for buffer, leakage and uncertainty; 50-70% effectiveness; $5-10 per credit. Baseline taken from the reserve's own history, which a carbon standard would not accept as is."
+ }
+}

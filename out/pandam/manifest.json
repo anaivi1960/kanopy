@@ -1,0 +1,112 @@
+{
+ "key": "pandam",
+ "reserve_id": "wdpa-903111",
+ "name": "Pandam Wildlife Park",
+ "state": "Plateau",
+ "synthetic": false,
+ "boundary_note": "No polygon for the wildlife park itself exists in the World Database on Protected Areas or OpenStreetMap. This is the Ramsar site polygon 'Pandam and Wase Lakes' (site 903111), which is smaller than the 22,400 ha reported for the park.",
+ "data_through_year": 2025,
+ "headline": {
+  "area_ha": 19759,
+  "co2e_kt": 700,
+  "co2e_sd_kt": 400
+ },
+ "cell_count": 162,
+ "hashes": {
+  "boundary": "25b7345dbff3ec0e74ed7cd6d625c89cbfc3a8593514b7347c2997c6475daba4",
+  "inputs": "8b502d1b44aa565c000ee232638c5fd3096dc63202e45d2415f61aa47866fe32",
+  "code": "9c20c4cce0fc8c53f8aad2df3851779fa619f0de2a663e5970b63e2a78cea479",
+  "result": "df0410c4f95014491f0a2124dd6b9dbe902152e560ad9e47dcc81947900c9fdd",
+  "cells_file": "314773120e770aaa1923126af2d75667fa49bb42b13a270fcfe2fd149fc816c4"
+ },
+ "boundary_file": "wdpa_903111.geojson",
+ "inputs": [
+  {
+   "name": "gfc_lossyear.tif",
+   "what": "Tree cover loss year",
+   "source": "Hansen Global Forest Change 2025 v1.13",
+   "bytes": 20287,
+   "sha256": "995882581208371144ac8b6f18fb6c3938e968a9f90e10d5989ee9c31e365b24"
+  },
+  {
+   "name": "gfc_treecover2000.tif",
+   "what": "Tree canopy cover in 2000",
+   "source": "Hansen Global Forest Change 2025 v1.13",
+   "bytes": 275735,
+   "sha256": "0bdf06e907bda33516134286ff096e1ab237bcf37a8bcf1c18754b2a18422970"
+  },
+  {
+   "name": "tmf_TransitionMap_MainClasses.tif",
+   "what": "Moist forest condition classes",
+   "source": "JRC Tropical Moist Forest v1, through 2025",
+   "bytes": 11804,
+   "sha256": "6a888fff47a541e41e0c99de16859972725c058ef9a3dd7350f401940c17411f"
+  },
+  {
+   "name": "tmf_DeforestationYear.tif",
+   "what": "Moist forest deforestation year",
+   "source": "JRC Tropical Moist Forest v1, through 2025",
+   "bytes": 10446,
+   "sha256": "5d007c074fab09b6fa8a8b0c0000f95d7097bccc7687f7e996e7acc5a0694f9c"
+  },
+  {
+   "name": "tmf_DegradationYear.tif",
+   "what": "Moist forest degradation year",
+   "source": "JRC Tropical Moist Forest v1, through 2025",
+   "bytes": 7449,
+   "sha256": "e89ad85dc68ecc10762ef0a324ef7d60608022e4093c7ceaf54176d90b04e158"
+  },
+  {
+   "name": "worldcover2021.tif",
+   "what": "Land cover",
+   "source": "ESA WorldCover 10 m 2021 v200",
+   "bytes": 659678,
+   "sha256": "488defb2fb326cc24b35a93b2ec3c6f1146891ba0fbd522eafe44ae3ca916276"
+  },
+  {
+   "name": "eth_canopy_height2020.tif",
+   "what": "Canopy height",
+   "source": "ETH Global Canopy Height 10 m 2020",
+   "bytes": 1559588,
+   "sha256": "5f93231ed3b25804a775e1b7ebd88a996f1fc29909c811286f75bf8cda11a1a2"
+  },
+  {
+   "name": "cci_agb2022.tif",
+   "what": "Above-ground biomass",
+   "source": "ESA CCI Biomass v6.0, 2022",
+   "bytes": 58286,
+   "sha256": "41fdae1624c7f55ebb0de77a605f33629d400c5b629b1f39949ce5542caacd48"
+  },
+  {
+   "name": "cci_agb2022_sd.tif",
+   "what": "Above-ground biomass standard deviation",
+   "source": "ESA CCI Biomass v6.0, 2022",
+   "bytes": 52331,
+   "sha256": "d7ba15f0ad315fe8c49e0992fe0c7863cbec2ea5a0e2ac2c6082baff546557b4"
+  },
+  {
+   "name": "s2_recent.tif",
+   "what": "Recent optical scene",
+   "source": "Copernicus Sentinel-2 L2A, scene S2C_32PMQ_20251119_0_L2A + S2C_32PNQ_20251119_0_L2A",
+   "bytes": 12569496,
+   "sha256": "6a31544d9e7d09f6e5341f427096dd2bdfa24331b1d151f2c57c1b990dc14424"
+  }
+ ],
+ "code": [
+  {
+   "name": "tools/analyse.py",
+   "bytes": 13744,
+   "sha256": "6acf2027c6c201b66d5d6bdd775dd452035ce9608d6f73e0acd5fbd09c64a9dd"
+  },
+  {
+   "name": "tools/reserves.py",
+   "bytes": 2900,
+   "sha256": "016fd7823bba26f3d7fbf937e81e20f7d844ee89b5b2a887282528443c84bb46"
+  },
+  {
+   "name": "tools/grid.py",
+   "bytes": 4266,
+   "sha256": "d768ed9a77d254bda1db0875a046852478ac41aafe82fc170346cb8f631b47ca"
+  }
+ ]
+}

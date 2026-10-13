@@ -1,0 +1,15 @@
+node_modules/
+.venv/
+artifacts/
+cache/
+__pycache__/
+.env
+# whole 10-degree source tiles; the clipped rasters in data/<area>/ are what the analysis reads
+data/tmf/
+# WDPA boundaries are not ours to redistribute; the registry holds their hash
+data/boundaries/wdpa_*.geojson
+# Kam Edge's own report and site generators: they carry internal notes and write outside this folder
+tools/report.py
+tools/site_landing.py
+tools/figures.py
+# written by scripts/deploy.js; only a public-testnet one is committed

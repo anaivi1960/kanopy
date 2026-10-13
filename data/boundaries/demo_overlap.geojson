@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Overlap test area (synthetic)","note":"Drawn by Kam Edge to test the registry. Not a real project or a legal boundary."},"geometry":{"type":"Polygon","coordinates":[[[4.46,6.8],[4.61,6.8],[4.61,7.0],[4.46,7.0],[4.46,6.8]]]}}]}

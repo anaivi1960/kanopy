@@ -1,0 +1,17 @@
+[
+ {
+  "key": "omo",
+  "name": "Omo Forest Reserve",
+  "synthetic": false
+ },
+ {
+  "key": "pandam",
+  "name": "Pandam Wildlife Park",
+  "synthetic": false
+ },
+ {
+  "key": "overlap",
+  "name": "Overlap test area (synthetic)",
+  "synthetic": true
+ }
+]

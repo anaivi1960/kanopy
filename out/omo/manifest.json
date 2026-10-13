@@ -1,0 +1,112 @@
+{
+ "key": "omo",
+ "reserve_id": "wdpa-36820",
+ "name": "Omo Forest Reserve",
+ "state": "Ogun",
+ "synthetic": false,
+ "boundary_note": "World Database on Protected Areas polygon, site 36820, designation Forest Reserve. No gazette was consulted.",
+ "data_through_year": 2025,
+ "headline": {
+  "area_ha": 131907,
+  "co2e_kt": 17700,
+  "co2e_sd_kt": 11100
+ },
+ "cell_count": 1083,
+ "hashes": {
+  "boundary": "98815b230b26043296c0454c644716c7029ef2cdd0c741a0ce46a3d120ddf890",
+  "inputs": "9c3f8b517be3e392e75fe8ad01386029127c29c74dcb837a833bca243a987e6f",
+  "code": "9c20c4cce0fc8c53f8aad2df3851779fa619f0de2a663e5970b63e2a78cea479",
+  "result": "73b8c2408fb61b10471213c873c829fdcdf8d8e62e0bc2f4f25df832510c343e",
+  "cells_file": "d775117bbd29715a3261cf4fedbaf3caaacdc5968c642dedfac39bac19dc10de"
+ },
+ "boundary_file": "wdpa_36820.geojson",
+ "inputs": [
+  {
+   "name": "gfc_lossyear.tif",
+   "what": "Tree cover loss year",
+   "source": "Hansen Global Forest Change 2025 v1.13",
+   "bytes": 520345,
+   "sha256": "4f9bbafb3240694fde58b0be69ff2036202ea115d16b1047cdddddbb94abd925"
+  },
+  {
+   "name": "gfc_treecover2000.tif",
+   "what": "Tree canopy cover in 2000",
+   "source": "Hansen Global Forest Change 2025 v1.13",
+   "bytes": 2170071,
+   "sha256": "f40edcca7e7a3a2c5265899e0909b85fa1595db2d01fba952fb0d59a3e5084d6"
+  },
+  {
+   "name": "tmf_TransitionMap_MainClasses.tif",
+   "what": "Moist forest condition classes",
+   "source": "JRC Tropical Moist Forest v1, through 2025",
+   "bytes": 847175,
+   "sha256": "2cd8919ff1ee723c2a5b11e578816c8590d0af5bc433e76ef5bfe72f9281f6fc"
+  },
+  {
+   "name": "tmf_DeforestationYear.tif",
+   "what": "Moist forest deforestation year",
+   "source": "JRC Tropical Moist Forest v1, through 2025",
+   "bytes": 813218,
+   "sha256": "637f8bb1abe761e1a59519f88afe7f1a49baa54cff7939502d3d2855bbdcd344"
+  },
+  {
+   "name": "tmf_DegradationYear.tif",
+   "what": "Moist forest degradation year",
+   "source": "JRC Tropical Moist Forest v1, through 2025",
+   "bytes": 1331072,
+   "sha256": "b1fa031f48a93b9a45d5f63dcf9b15efa71fe5d776e3a08888da56617573c56d"
+  },
+  {
+   "name": "worldcover2021.tif",
+   "what": "Land cover",
+   "source": "ESA WorldCover 10 m 2021 v200",
+   "bytes": 619756,
+   "sha256": "2b1afa739a06bf4e71fa1e178822f2fa485c64cffa314493b28a2a4c76d23df0"
+  },
+  {
+   "name": "eth_canopy_height2020.tif",
+   "what": "Canopy height",
+   "source": "ETH Global Canopy Height 10 m 2020",
+   "bytes": 6320588,
+   "sha256": "f5d2391689c8806721757c13a99b49b9f03a1dc808b08def495c3d4eb3968b32"
+  },
+  {
+   "name": "cci_agb2022.tif",
+   "what": "Above-ground biomass",
+   "source": "ESA CCI Biomass v6.0, 2022",
+   "bytes": 414502,
+   "sha256": "76b82ba707c209a471715037a69df1bf785856df48957a311e8e17cc184b788b"
+  },
+  {
+   "name": "cci_agb2022_sd.tif",
+   "what": "Above-ground biomass standard deviation",
+   "source": "ESA CCI Biomass v6.0, 2022",
+   "bytes": 380062,
+   "sha256": "83f2616b0c9fed5e40ff816eb3a8b63f65ccb4d567704d2de2291678e9ff2a86"
+  },
+  {
+   "name": "s2_recent.tif",
+   "what": "Recent optical scene",
+   "source": "Copernicus Sentinel-2 L2A, scene S2A_31NFH_20241130_0_L2A",
+   "bytes": 42328813,
+   "sha256": "acf5f0554287bcf890aa480b8c6d380ac1d3010f07d9ec54019291db231dd499"
+  }
+ ],
+ "code": [
+  {
+   "name": "tools/analyse.py",
+   "bytes": 13744,
+   "sha256": "6acf2027c6c201b66d5d6bdd775dd452035ce9608d6f73e0acd5fbd09c64a9dd"
+  },
+  {
+   "name": "tools/reserves.py",
+   "bytes": 2900,
+   "sha256": "016fd7823bba26f3d7fbf937e81e20f7d844ee89b5b2a887282528443c84bb46"
+  },
+  {
+   "name": "tools/grid.py",
+   "bytes": 4266,
+   "sha256": "d768ed9a77d254bda1db0875a046852478ac41aafe82fc170346cb8f631b47ca"
+  }
+ ]
+}

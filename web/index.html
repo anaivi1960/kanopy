@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kanopy Verifier</title>
+<meta name="description" content="Check a forest reserve baseline against its on-chain fingerprint, and see which ground is already counted.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand"><span class="glyph" aria-hidden="true"></span><span>Kanopy</span><span class="brand-sub">Verifier</span></div>
+    <div id="net" class="net">Connecting…</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <p class="eyebrow">Forest baselines you can check</p>
+    <h1>The forest, measured. <span>The measurement, checkable.</span></h1>
+    <p class="lede">Kanopy measures a reserve from open satellite data and records a fingerprint of the boundary, the inputs, the code and the result in a public registry. This page recomputes those fingerprints in your browser and compares them with the registry. It also shows which ground is already counted for a year, so two projects cannot count it twice.</p>
+  </section>
+
+  <nav id="tabs" class="tabs" aria-label="Area"></nav>
+  <p id="note" class="note" hidden></p>
+
+  <section aria-labelledby="h-figures">
+    <h2 id="h-figures"><span class="n">1</span>What was measured</h2>
+    <div id="tiles" class="tiles"></div>
+    <div class="grid2">
+      <figure class="panel">
+        <figcaption><strong>Tree-cover loss by year</strong><span id="loss-sub"></span></figcaption>
+        <div id="bars" class="chart"></div>
+      </figure>
+      <figure class="panel">
+        <figcaption><strong>Where it was lost, and what is counted</strong><span id="map-sub"></span></figcaption>
+        <div id="map" class="chart"></div>
+        <div id="legend" class="legend"></div>
+      </figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-checks">
+    <h2 id="h-checks"><span class="n">2</span>Does it match the registry?</h2>
+    <div class="row-head">
+      <p id="verdict" class="verdict"></p>
+      <div class="actions">
+        <button id="tamper" class="btn ghost" type="button">Alter one figure</button>
+        <button id="restore" class="btn ghost" type="button" hidden>Restore the file</button>
+      </div>
+    </div>
+    <p id="tamper-note" class="note" hidden></p>
+    <div class="table-wrap"><table id="checks" class="checks">
+      <thead><tr><th>Fingerprint</th><th>What it covers</th><th>In the registry</th><th>Result</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <p class="small">The first two rows hash the files themselves in this browser. The next two hash the published list of raster and script fingerprints. Checking the rasters, the scripts and the boundary file byte for byte, and rerunning the analysis, is what <code>python tools/verify.py</code> does.</p>
+  </section>
+
+  <section aria-labelledby="h-claim">
+    <h2 id="h-claim"><span class="n">3</span>Is this ground already counted?</h2>
+    <div id="claim" class="panel claim"></div>
+  </section>
+
+  <section aria-labelledby="h-limits">
+    <h2 id="h-limits"><span class="n">4</span>What this does not show</h2>
+    <ul class="limits">
+      <li><strong>It is not a carbon credit.</strong> The registry records measurements and who counts which ground. It does not issue, price or transfer anything.</li>
+      <li><strong>The carbon figure is wide.</strong> It is above-ground biomass from a global map, and the uncertainty shown is the map's own. Nobody has walked either reserve for us.</li>
+      <li><strong>A match proves the record was not changed.</strong> It does not prove the satellite products are right about the forest. That takes field plots.</li>
+      <li><strong>The claims here are demonstrations.</strong> They were made with Kam Edge test keys, not by the authorities that manage these reserves, and the overlap area is a rectangle we drew.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>Kam Edge · Kanopy. Desk studies from public satellite data. Not legal, investment or carbon-accounting advice.</p>
+  <p id="foot-contract"></p>
+</footer>
+
+<div id="tip" class="tip" role="status" hidden></div>
+<script src="vendor/ethers.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
