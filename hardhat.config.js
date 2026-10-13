@@ -5,6 +5,16 @@ require("@nomicfoundation/hardhat-chai-matchers");
 //   KANOPY_RPC_URL       the network's JSON-RPC endpoint
 //   KANOPY_DEPLOYER_KEY  the private key that deploys and attests
 //   KANOPY_STEWARD_KEY   (optional) a second key that makes the demonstration claim
+// The same settings can live in ~/.kanopy/testnet.env (KEY=value lines), outside the repo.
+const envFile = require("path").join(require("os").homedir(), ".kanopy", "testnet.env");
+if (require("fs").existsSync(envFile)) {
+  for (const line of require("fs").readFileSync(envFile, "utf8").split(/?
+/)) {
+    const m = line.match(/^([A-Z_]+)=(.*)$/);
+    if (m && process.env[m[1]] === undefined) process.env[m[1]] = m[2];
+  }
+}
+
 const keys = [process.env.KANOPY_DEPLOYER_KEY, process.env.KANOPY_STEWARD_KEY].filter(Boolean);
 
 module.exports = {

@@ -21,13 +21,19 @@ const TEST_STEWARD = ethers.getAddress(ethers.dataSlice(ethers.id("Kanopy overla
 
 async function main() {
   const local = hre.network.name === "localhost" || hre.network.name === "hardhat";
-  const rpcUrl = process.env.KANOPY_PUBLIC_RPC_URL || (local ? "http://127.0.0.1:8545" : null);
+  const rpcUrl = local ? "http://127.0.0.1:8545" : process.env.KANOPY_PUBLIC_RPC_URL;
   if (!rpcUrl) throw new Error("Set KANOPY_PUBLIC_RPC_URL to a keyless endpoint the page can read from.");
-  const baseUri = process.env.KANOPY_BASE_URI || "";
+  const baseUri = local ? "" : process.env.KANOPY_BASE_URI || "";
 
   const [deployer, second] = await ethers.getSigners();
   const steward = second ?? deployer;
   const sent = async (tx) => (await tx).wait();
+
+  // On a testnet only the deployer needs funding: it passes the steward enough for its one claim.
+  const float = ethers.parseEther(process.env.KANOPY_STEWARD_FUND || "0.0005");
+  if (steward.address !== deployer.address && (await ethers.provider.getBalance(steward.address)) < float) {
+    await sent(deployer.sendTransaction({ to: steward.address, value: float }));
+  }
 
   const reg = await (await ethers.getContractFactory("KanopyRegistry", deployer)).deploy();
   const deployed = await reg.deploymentTransaction().wait();
@@ -61,7 +67,7 @@ async function main() {
     chainId: Number((await ethers.provider.getNetwork()).chainId),
     address,
     rpcUrl,
-    explorer: process.env.KANOPY_EXPLORER_URL || null,
+    explorer: local ? null : process.env.KANOPY_EXPLORER_URL || null,
     deployedAtBlock: deployed.blockNumber,
     attester: deployer.address,
     steward: steward.address,
