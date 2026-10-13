@@ -8,8 +8,7 @@ require("@nomicfoundation/hardhat-chai-matchers");
 // The same settings can live in ~/.kanopy/testnet.env (KEY=value lines), outside the repo.
 const envFile = require("path").join(require("os").homedir(), ".kanopy", "testnet.env");
 if (require("fs").existsSync(envFile)) {
-  for (const line of require("fs").readFileSync(envFile, "utf8").split(/?
-/)) {
+  for (const line of require("fs").readFileSync(envFile, "utf8").split(/\r?\n/)) {
     const m = line.match(/^([A-Z_]+)=(.*)$/);
     if (m && process.env[m[1]] === undefined) process.env[m[1]] = m[2];
   }
