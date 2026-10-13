@@ -29,46 +29,55 @@ async function main() {
   const steward = second ?? deployer;
   const sent = async (tx) => (await tx).wait();
 
-  // On a testnet only the deployer needs funding: it passes the steward enough for its one claim.
-  const float = ethers.parseEther(process.env.KANOPY_STEWARD_FUND || "0.0005");
-  if (steward.address !== deployer.address && (await ethers.provider.getBalance(steward.address)) < float) {
-    await sent(deployer.sendTransaction({ to: steward.address, value: float }));
+  // KANOPY_RESUME=<registry address> picks up a run that stopped part way: steps already on the
+  // chain are skipped, so a dropped connection never means paying for a second registry.
+  let reg, deployed = null;
+  if (process.env.KANOPY_RESUME && !local) {
+    reg = await ethers.getContractAt("KanopyRegistry", process.env.KANOPY_RESUME, deployer);
+    console.log(`resuming KanopyRegistry at ${process.env.KANOPY_RESUME} on ${hre.network.name}`);
+  } else {
+    reg = await (await ethers.getContractFactory("KanopyRegistry", deployer)).deploy();
+    deployed = await reg.deploymentTransaction().wait();
+    console.log(`KanopyRegistry at ${await reg.getAddress()} on ${hre.network.name}`);
   }
-
-  const reg = await (await ethers.getContractFactory("KanopyRegistry", deployer)).deploy();
-  const deployed = await reg.deploymentTransaction().wait();
   const address = await reg.getAddress();
-  console.log(`KanopyRegistry at ${address} on ${hre.network.name}`);
-  await sent(reg.setAttester(deployer.address, true));
+  if (!(await reg.isAttester(deployer.address))) await sent(reg.setAttester(deployer.address, true));
 
-  const txs = { deploy: deployed.hash, attest: {}, register: {} };
-  let gas = deployed.gasUsed;
+  const txs = { deploy: deployed && deployed.hash, attest: {}, register: {} };
   for (const key of lib.keys()) {
-    const m = lib.manifest(key);
+    const m = lib.manifest(key), id = lib.reserveId(m);
     const who = m.synthetic ? TEST_STEWARD : steward.address;
-    const r = await sent(reg.registerReserve(lib.reserveId(m), m.name, who, lib.hash(m.hashes.boundary), lib.rows(key)));
-    const a = await sent(reg.attest(...lib.attestArgs(m, `${baseUri}data/${key}/manifest.json`)));
-    txs.register[key] = r.hash;
-    txs.attest[key] = a.hash;
-    gas += r.gasUsed + a.gasUsed;
+    let onChain = await reg.reserves(id);
+    if (onChain.cellCount === 0n) {
+      txs.register[key] = (await sent(reg.registerReserve(id, m.name, who, lib.hash(m.hashes.boundary), lib.rows(key)))).hash;
+      onChain = await reg.reserves(id);
+    }
+    if (onChain.baselineCount === 0n) {
+      txs.attest[key] = (await sent(reg.attest(...lib.attestArgs(m, `${baseUri}data/${key}/manifest.json`)))).hash;
+    }
     console.log(`  ${m.reserve_id}: ${m.cell_count} cells registered, baseline v1 attested`);
   }
 
   const omo = lib.manifest("omo");
-  const c = await sent(reg.connect(steward).claim(lib.reserveId(omo), lib.YEAR, 1, lib.rows("omo")));
-  txs.claim = c.hash;
-  gas += c.gasUsed;
+  if ((await reg.claimCount()) === 0n) {
+    // On a testnet only the deployer needs funding: it passes the steward enough for its one
+    // claim. Wallets reserve gas limit x maximum fee up front, which is far more than is spent.
+    const float = ethers.parseEther(process.env.KANOPY_STEWARD_FUND || "0.015");
+    if (steward.address !== deployer.address && (await ethers.provider.getBalance(steward.address)) < float) {
+      await sent(deployer.sendTransaction({ to: steward.address, value: float }));
+    }
+    txs.claim = (await sent(reg.connect(steward).claim(lib.reserveId(omo), lib.YEAR, 1, lib.rows("omo")))).hash;
+  }
   console.log(`  ${omo.reserve_id}: all cells claimed for ${lib.YEAR}`);
-  console.log(`  total gas ${gas}`);
 
   const artifact = await hre.artifacts.readArtifact("KanopyRegistry");
   const out = {
-    network: hre.network.name,
+    network: process.env.KANOPY_NETWORK_NAME || hre.network.name,
     chainId: Number((await ethers.provider.getNetwork()).chainId),
     address,
     rpcUrl,
     explorer: local ? null : process.env.KANOPY_EXPLORER_URL || null,
-    deployedAtBlock: deployed.blockNumber,
+    deployedAtBlock: deployed && deployed.blockNumber,
     attester: deployer.address,
     steward: steward.address,
     testSteward: TEST_STEWARD,

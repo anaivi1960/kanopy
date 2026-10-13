@@ -7,6 +7,14 @@ and check it. The same registry lets a project count a piece of ground for a yea
 Built by Kam Edge for the IEEE ClimateChain Global Hackathon, track **Climate Data &
 Environmental Monitoring**.
 
+## Live
+
+- Verifier page: https://kamhq.com/kanopy/verify/
+- Registry on Ethereum Sepolia: [`0x21166Dd8970adFF801effE70232c1cB6e8C3Fd17`](https://sepolia.etherscan.io/address/0x21166Dd8970adFF801effE70232c1cB6e8C3Fd17)
+
+`web/deployment.json` names the registry the page reads. `scripts/deploy.js` rewrites it, so
+deploying to a local chain as described below points your copy of the page at that chain instead.
+
 ## What is here
 
 | Part | Where | What it does |

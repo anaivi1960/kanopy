@@ -1,0 +1,892 @@
+{
+ "network": "Ethereum Sepolia",
+ "chainId": 11155111,
+ "address": "0x21166Dd8970adFF801effE70232c1cB6e8C3Fd17",
+ "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com",
+ "explorer": "https://sepolia.etherscan.io",
+ "deployedAtBlock": null,
+ "attester": "0xabF28Fa262a57AEe2Dd1C124913F754fF206A434",
+ "steward": "0xEc3dFedb36E615cb0FD3ffd858C06a0eb3ae74bd",
+ "testSteward": "0xEd80846a7106BE767F798305e48598c2B43eFfb0",
+ "year": 2025,
+ "txs": {
+  "deploy": null,
+  "attest": {},
+  "register": {},
+  "claim": "0xdc88da1a0f71dc0e2e41768260c6a9d8364945142c07f3c9cb23fcaaa37e9d77"
+ },
+ "abi": [
+  {
+   "inputs": [],
+   "stateMutability": "nonpayable",
+   "type": "constructor"
+  },
+  {
+   "inputs": [],
+   "name": "BadRows",
+   "type": "error"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "uint16",
+     "name": "year",
+     "type": "uint16"
+    },
+    {
+     "internalType": "uint32",
+     "name": "lat",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint16",
+     "name": "word",
+     "type": "uint16"
+    },
+    {
+     "internalType": "uint256",
+     "name": "taken",
+     "type": "uint256"
+    }
+   ],
+   "name": "CellsAlreadyClaimed",
+   "type": "error"
+  },
+  {
+   "inputs": [],
+   "name": "NotAttester",
+   "type": "error"
+  },
+  {
+   "inputs": [],
+   "name": "NotOwner",
+   "type": "error"
+  },
+  {
+   "inputs": [],
+   "name": "NotSteward",
+   "type": "error"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "uint32",
+     "name": "lat",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint16",
+     "name": "word",
+     "type": "uint16"
+    },
+    {
+     "internalType": "uint256",
+     "name": "outside",
+     "type": "uint256"
+    }
+   ],
+   "name": "OutsideFootprint",
+   "type": "error"
+  },
+  {
+   "inputs": [],
+   "name": "ReserveExists",
+   "type": "error"
+  },
+  {
+   "inputs": [],
+   "name": "UnknownBaseline",
+   "type": "error"
+  },
+  {
+   "inputs": [],
+   "name": "UnknownReserve",
+   "type": "error"
+  },
+  {
+   "anonymous": false,
+   "inputs": [
+    {
+     "indexed": true,
+     "internalType": "address",
+     "name": "attester",
+     "type": "address"
+    },
+    {
+     "indexed": false,
+     "internalType": "bool",
+     "name": "allowed",
+     "type": "bool"
+    }
+   ],
+   "name": "AttesterSet",
+   "type": "event"
+  },
+  {
+   "anonymous": false,
+   "inputs": [
+    {
+     "indexed": true,
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "indexed": false,
+     "internalType": "uint32",
+     "name": "version",
+     "type": "uint32"
+    },
+    {
+     "indexed": false,
+     "internalType": "bytes32",
+     "name": "resultHash",
+     "type": "bytes32"
+    },
+    {
+     "indexed": false,
+     "internalType": "address",
+     "name": "attester",
+     "type": "address"
+    }
+   ],
+   "name": "BaselineAttested",
+   "type": "event"
+  },
+  {
+   "anonymous": false,
+   "inputs": [
+    {
+     "indexed": true,
+     "internalType": "uint256",
+     "name": "claimId",
+     "type": "uint256"
+    },
+    {
+     "indexed": true,
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "indexed": true,
+     "internalType": "uint16",
+     "name": "year",
+     "type": "uint16"
+    },
+    {
+     "indexed": false,
+     "internalType": "uint32",
+     "name": "baselineVersion",
+     "type": "uint32"
+    },
+    {
+     "indexed": false,
+     "internalType": "uint32",
+     "name": "cellCount",
+     "type": "uint32"
+    },
+    {
+     "components": [
+      {
+       "internalType": "uint32",
+       "name": "lat",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint16",
+       "name": "word",
+       "type": "uint16"
+      },
+      {
+       "internalType": "uint256",
+       "name": "mask",
+       "type": "uint256"
+      }
+     ],
+     "indexed": false,
+     "internalType": "struct KanopyRegistry.Row[]",
+     "name": "rows",
+     "type": "tuple[]"
+    }
+   ],
+   "name": "Claimed",
+   "type": "event"
+  },
+  {
+   "anonymous": false,
+   "inputs": [
+    {
+     "indexed": true,
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "indexed": false,
+     "internalType": "string",
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "indexed": false,
+     "internalType": "address",
+     "name": "steward",
+     "type": "address"
+    },
+    {
+     "indexed": false,
+     "internalType": "bytes32",
+     "name": "boundaryHash",
+     "type": "bytes32"
+    },
+    {
+     "indexed": false,
+     "internalType": "bytes32",
+     "name": "footprintHash",
+     "type": "bytes32"
+    },
+    {
+     "indexed": false,
+     "internalType": "uint32",
+     "name": "cellCount",
+     "type": "uint32"
+    }
+   ],
+   "name": "ReserveRegistered",
+   "type": "event"
+  },
+  {
+   "anonymous": false,
+   "inputs": [
+    {
+     "indexed": true,
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "indexed": false,
+     "internalType": "address",
+     "name": "steward",
+     "type": "address"
+    }
+   ],
+   "name": "StewardChanged",
+   "type": "event"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "bytes32",
+     "name": "inputsHash",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "bytes32",
+     "name": "codeHash",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "bytes32",
+     "name": "resultHash",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "uint32",
+     "name": "areaHa",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint32",
+     "name": "co2eKt",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint32",
+     "name": "co2eSdKt",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint16",
+     "name": "dataThroughYear",
+     "type": "uint16"
+    },
+    {
+     "internalType": "string",
+     "name": "uri",
+     "type": "string"
+    }
+   ],
+   "name": "attest",
+   "outputs": [
+    {
+     "internalType": "uint32",
+     "name": "version",
+     "type": "uint32"
+    }
+   ],
+   "stateMutability": "nonpayable",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "uint32",
+     "name": "version",
+     "type": "uint32"
+    }
+   ],
+   "name": "baseline",
+   "outputs": [
+    {
+     "components": [
+      {
+       "internalType": "bytes32",
+       "name": "inputsHash",
+       "type": "bytes32"
+      },
+      {
+       "internalType": "bytes32",
+       "name": "codeHash",
+       "type": "bytes32"
+      },
+      {
+       "internalType": "bytes32",
+       "name": "resultHash",
+       "type": "bytes32"
+      },
+      {
+       "internalType": "uint32",
+       "name": "areaHa",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint32",
+       "name": "co2eKt",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint32",
+       "name": "co2eSdKt",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint16",
+       "name": "dataThroughYear",
+       "type": "uint16"
+      },
+      {
+       "internalType": "uint64",
+       "name": "attestedAt",
+       "type": "uint64"
+      },
+      {
+       "internalType": "address",
+       "name": "attester",
+       "type": "address"
+      },
+      {
+       "internalType": "string",
+       "name": "uri",
+       "type": "string"
+      }
+     ],
+     "internalType": "struct KanopyRegistry.Baseline",
+     "name": "",
+     "type": "tuple"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "uint16",
+     "name": "year",
+     "type": "uint16"
+    },
+    {
+     "internalType": "uint32",
+     "name": "baselineVersion",
+     "type": "uint32"
+    },
+    {
+     "components": [
+      {
+       "internalType": "uint32",
+       "name": "lat",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint16",
+       "name": "word",
+       "type": "uint16"
+      },
+      {
+       "internalType": "uint256",
+       "name": "mask",
+       "type": "uint256"
+      }
+     ],
+     "internalType": "struct KanopyRegistry.Row[]",
+     "name": "rows",
+     "type": "tuple[]"
+    }
+   ],
+   "name": "claim",
+   "outputs": [
+    {
+     "internalType": "uint256",
+     "name": "claimId",
+     "type": "uint256"
+    }
+   ],
+   "stateMutability": "nonpayable",
+   "type": "function"
+  },
+  {
+   "inputs": [],
+   "name": "claimCount",
+   "outputs": [
+    {
+     "internalType": "uint256",
+     "name": "",
+     "type": "uint256"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "uint16",
+     "name": "year",
+     "type": "uint16"
+    },
+    {
+     "components": [
+      {
+       "internalType": "uint32",
+       "name": "lat",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint16",
+       "name": "word",
+       "type": "uint16"
+      },
+      {
+       "internalType": "uint256",
+       "name": "mask",
+       "type": "uint256"
+      }
+     ],
+     "internalType": "struct KanopyRegistry.Row[]",
+     "name": "rows",
+     "type": "tuple[]"
+    }
+   ],
+   "name": "claimedMasks",
+   "outputs": [
+    {
+     "internalType": "uint256[]",
+     "name": "taken",
+     "type": "uint256[]"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "uint16",
+     "name": "year",
+     "type": "uint16"
+    },
+    {
+     "internalType": "uint32",
+     "name": "lat",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint16",
+     "name": "word",
+     "type": "uint16"
+    }
+   ],
+   "name": "claimedWord",
+   "outputs": [
+    {
+     "internalType": "uint256",
+     "name": "",
+     "type": "uint256"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "uint16",
+     "name": "year",
+     "type": "uint16"
+    },
+    {
+     "components": [
+      {
+       "internalType": "uint32",
+       "name": "lat",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint16",
+       "name": "word",
+       "type": "uint16"
+      },
+      {
+       "internalType": "uint256",
+       "name": "mask",
+       "type": "uint256"
+      }
+     ],
+     "internalType": "struct KanopyRegistry.Row[]",
+     "name": "rows",
+     "type": "tuple[]"
+    }
+   ],
+   "name": "conflicts",
+   "outputs": [
+    {
+     "internalType": "uint32",
+     "name": "cells",
+     "type": "uint32"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "uint32",
+     "name": "lat",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint16",
+     "name": "word",
+     "type": "uint16"
+    }
+   ],
+   "name": "footprintWord",
+   "outputs": [
+    {
+     "internalType": "uint256",
+     "name": "",
+     "type": "uint256"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "uint256",
+     "name": "claimId",
+     "type": "uint256"
+    }
+   ],
+   "name": "getClaim",
+   "outputs": [
+    {
+     "components": [
+      {
+       "internalType": "bytes32",
+       "name": "reserveId",
+       "type": "bytes32"
+      },
+      {
+       "internalType": "uint16",
+       "name": "year",
+       "type": "uint16"
+      },
+      {
+       "internalType": "uint32",
+       "name": "baselineVersion",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint32",
+       "name": "cellCount",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint64",
+       "name": "claimedAt",
+       "type": "uint64"
+      },
+      {
+       "internalType": "address",
+       "name": "claimant",
+       "type": "address"
+      }
+     ],
+     "internalType": "struct KanopyRegistry.Claim",
+     "name": "",
+     "type": "tuple"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "address",
+     "name": "",
+     "type": "address"
+    }
+   ],
+   "name": "isAttester",
+   "outputs": [
+    {
+     "internalType": "bool",
+     "name": "",
+     "type": "bool"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "uint16",
+     "name": "year",
+     "type": "uint16"
+    },
+    {
+     "internalType": "uint32",
+     "name": "lat",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint32",
+     "name": "lon",
+     "type": "uint32"
+    }
+   ],
+   "name": "isClaimed",
+   "outputs": [
+    {
+     "internalType": "bool",
+     "name": "",
+     "type": "bool"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [],
+   "name": "owner",
+   "outputs": [
+    {
+     "internalType": "address",
+     "name": "",
+     "type": "address"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "string",
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "internalType": "address",
+     "name": "steward",
+     "type": "address"
+    },
+    {
+     "internalType": "bytes32",
+     "name": "boundaryHash",
+     "type": "bytes32"
+    },
+    {
+     "components": [
+      {
+       "internalType": "uint32",
+       "name": "lat",
+       "type": "uint32"
+      },
+      {
+       "internalType": "uint16",
+       "name": "word",
+       "type": "uint16"
+      },
+      {
+       "internalType": "uint256",
+       "name": "mask",
+       "type": "uint256"
+      }
+     ],
+     "internalType": "struct KanopyRegistry.Row[]",
+     "name": "rows",
+     "type": "tuple[]"
+    }
+   ],
+   "name": "registerReserve",
+   "outputs": [],
+   "stateMutability": "nonpayable",
+   "type": "function"
+  },
+  {
+   "inputs": [],
+   "name": "reserveCount",
+   "outputs": [
+    {
+     "internalType": "uint256",
+     "name": "",
+     "type": "uint256"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "uint256",
+     "name": "",
+     "type": "uint256"
+    }
+   ],
+   "name": "reserveIds",
+   "outputs": [
+    {
+     "internalType": "bytes32",
+     "name": "",
+     "type": "bytes32"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "bytes32",
+     "name": "",
+     "type": "bytes32"
+    }
+   ],
+   "name": "reserves",
+   "outputs": [
+    {
+     "internalType": "string",
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "internalType": "address",
+     "name": "steward",
+     "type": "address"
+    },
+    {
+     "internalType": "bytes32",
+     "name": "boundaryHash",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "bytes32",
+     "name": "footprintHash",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "uint32",
+     "name": "cellCount",
+     "type": "uint32"
+    },
+    {
+     "internalType": "uint32",
+     "name": "baselineCount",
+     "type": "uint32"
+    }
+   ],
+   "stateMutability": "view",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "address",
+     "name": "attester",
+     "type": "address"
+    },
+    {
+     "internalType": "bool",
+     "name": "allowed",
+     "type": "bool"
+    }
+   ],
+   "name": "setAttester",
+   "outputs": [],
+   "stateMutability": "nonpayable",
+   "type": "function"
+  },
+  {
+   "inputs": [
+    {
+     "internalType": "bytes32",
+     "name": "reserveId",
+     "type": "bytes32"
+    },
+    {
+     "internalType": "address",
+     "name": "steward",
+     "type": "address"
+    }
+   ],
+   "name": "setSteward",
+   "outputs": [],
+   "stateMutability": "nonpayable",
+   "type": "function"
+  }
+ ]
+}
