@@ -13,3 +13,5 @@ tools/report.py
 tools/site_landing.py
 tools/figures.py
 # written by scripts/deploy.js; only a public-testnet one is committed
+demo/build/
+demo/out/
