@@ -1,0 +1,6 @@
+# Pages and data must be checked on every visit: deployment.json and the baselines change when a
+# new measurement is attested. Assets are versioned in index.html, so their long cache is safe.
+<FilesMatch "\.(html|json)$">
+Header set Cache-Control "no-cache"
+</FilesMatch>
+DirectoryIndex index.html
