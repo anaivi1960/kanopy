@@ -7,15 +7,14 @@
   --bar: #c25526; --bar-hi: #ff7d42; --counted: #35d07f; --taken: #ff6b5e;
   color-scheme: dark;
 }
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #f3f4f1; --surface: #fafbf9; --fg: #0c0e0d; --fg-dim: #474c49; --fg-mute: #686e6a; --hair: #d6d9d4;
-    --accent: #0b7a45; --on-accent: #fff;
-    --good: #0b7a45; --bad: #b8291d; --pending: #686e6a;
-    --l0: #ece4de; --l1: #e6c3ad; --l2: #db9770; --l3: #c8683a; --l4: #9c3d17;
-    --bar: #c8683a; --bar-hi: #9c3d17; --counted: #0b7a45; --taken: #b8291d;
-    color-scheme: light;
-  }
+/* Dark is the default whatever the system says; light only when the viewer switches to it. */
+:root[data-theme="light"] {
+  --bg: #f3f4f1; --surface: #fafbf9; --fg: #0c0e0d; --fg-dim: #474c49; --fg-mute: #686e6a; --hair: #d6d9d4;
+  --accent: #0b7a45; --on-accent: #fff;
+  --good: #0b7a45; --bad: #b8291d; --pending: #686e6a;
+  --l0: #ece4de; --l1: #e6c3ad; --l2: #db9770; --l3: #c8683a; --l4: #9c3d17;
+  --bar: #c8683a; --bar-hi: #9c3d17; --counted: #0b7a45; --taken: #b8291d;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -31,6 +30,11 @@ code { font: 12.5px/1.4 ui-monospace, Consolas, monospace; color: var(--fg-dim);
 .glyph::after { content: ""; position: absolute; inset: 3px; background: var(--accent); }
 .net { font-size: 11px; letter-spacing: 1px; color: var(--fg-dim); text-align: right; }
 .net b { color: var(--fg); font-weight: 600; }
+.top-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: flex-end; }
+.theme { font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; background: none; color: var(--fg); border: 1px solid var(--hair); padding: 8px 12px; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.theme:hover { border-color: var(--fg-mute); }
+.theme:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.theme svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 
 .intro { padding: 44px 0 26px; max-width: 800px; }
 .eyebrow, h2 .n, th, .tile-label, .tabs button, .btn { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }

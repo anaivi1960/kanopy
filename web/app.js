@@ -46,6 +46,23 @@
   }
   const hideTip = () => { tip.hidden = true; };
 
+  // ── theme: dark unless the viewer switches to light; the choice is remembered ─
+  const SUN = '<circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/>';
+  const MOON = '<path d="M13.5 9.6A5.6 5.6 0 0 1 6.4 2.5a5.6 5.6 0 1 0 7.1 7.1z"/>';
+  function setTheme(light, remember) {
+    const root = document.documentElement, b = $("theme");
+    if (light) root.dataset.theme = "light";
+    else delete root.dataset.theme;
+    // The button names the theme it switches TO.
+    b.setAttribute("aria-pressed", String(light));
+    b.setAttribute("aria-label", light ? "Dark theme" : "Light theme");
+    b.querySelector("svg").innerHTML = light ? MOON : SUN;
+    b.querySelector("span").textContent = light ? "Dark" : "Light";
+    if (remember) try { localStorage.setItem("kanopy-theme", light ? "light" : "dark"); } catch (e) {}
+  }
+  setTheme(document.documentElement.dataset.theme === "light", false);
+  $("theme").addEventListener("click", () => setTheme(document.documentElement.dataset.theme !== "light", true));
+
   // ── start ────────────────────────────────────────────────────────────────
   async function start() {
     S.index = await getJson("data/index.json");
