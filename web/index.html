@@ -9,14 +9,14 @@
   // Before first paint, so a viewer who chose light never sees a dark flash.
   try { if (localStorage.getItem("kanopy-theme") === "light") document.documentElement.dataset.theme = "light"; } catch (e) {}
 </script>
-<link rel="stylesheet" href="style.css?v=ba9986ce45">
+<link rel="stylesheet" href="style.css?v=99fc4813dc">
 </head>
 <body>
 <header class="top">
   <div class="wrap top-in">
     <div class="brand"><span class="glyph" aria-hidden="true"></span><span>Kanopy</span><span class="brand-sub">Verifier</span></div>
     <div class="top-right">
-      <div id="net" class="net">Connecting…</div>
+      <div id="net" class="net"><span class="spin" aria-hidden="true"></span>Connecting to the registry…</div>
       <button id="theme" class="theme" type="button" aria-pressed="false" aria-label="Light theme">
         <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg>
         <span>Light</span>
@@ -37,15 +37,15 @@
 
   <section aria-labelledby="h-figures">
     <h2 id="h-figures"><span class="n">1</span>What was measured</h2>
-    <div id="tiles" class="tiles"></div>
+    <div id="tiles" class="tiles"><div class="loading" role="status"><span class="spin" aria-hidden="true"></span>Loading the measurement&hellip;</div></div>
     <div class="grid2">
       <figure class="panel">
         <figcaption><strong>Tree-cover loss by year</strong><span id="loss-sub"></span></figcaption>
-        <div id="bars" class="chart"></div>
+        <div id="bars" class="chart"><div class="loading" role="status"><span class="spin" aria-hidden="true"></span>Loading the chart&hellip;</div></div>
       </figure>
       <figure class="panel">
         <figcaption><strong>Where it was lost, and what is counted</strong><span id="map-sub"></span></figcaption>
-        <div id="map" class="chart"></div>
+        <div id="map" class="chart"><div class="loading" role="status"><span class="spin" aria-hidden="true"></span>Loading the map&hellip;</div></div>
         <div id="legend" class="legend"></div>
       </figure>
     </div>
@@ -54,23 +54,23 @@
   <section aria-labelledby="h-checks">
     <h2 id="h-checks"><span class="n">2</span>Does it match the registry?</h2>
     <div class="row-head">
-      <p id="verdict" class="verdict"></p>
+      <p id="verdict" class="verdict"><span class="reading" role="status"><span class="spin" aria-hidden="true"></span>Loading&hellip;</span></p>
       <div class="actions">
-        <button id="tamper" class="btn ghost" type="button">Alter one figure</button>
+        <button id="tamper" class="btn ghost" type="button" hidden>Alter one figure</button>
         <button id="restore" class="btn ghost" type="button" hidden>Restore the file</button>
       </div>
     </div>
     <p id="tamper-note" class="note" hidden></p>
     <div class="table-wrap"><table id="checks" class="checks">
       <thead><tr><th>Fingerprint</th><th>What it covers</th><th>In the registry</th><th>Result</th></tr></thead>
-      <tbody></tbody>
+      <tbody><tr><td colspan="4"><div class="loading" role="status"><span class="spin" aria-hidden="true"></span>Loading the fingerprints&hellip;</div></td></tr></tbody>
     </table></div>
     <p class="small">The first two rows hash the files themselves in this browser. The next two hash the published list of raster and script fingerprints. Checking the rasters, the scripts and the boundary file byte for byte, and rerunning the analysis, is what <code>python tools/verify.py</code> does.</p>
   </section>
 
   <section aria-labelledby="h-claim">
     <h2 id="h-claim"><span class="n">3</span>Is this ground already counted?</h2>
-    <div id="claim" class="panel claim"></div>
+    <div id="claim" class="panel claim"><div class="loading" role="status"><span class="spin" aria-hidden="true"></span>Loading&hellip;</div></div>
   </section>
 
   <section aria-labelledby="h-limits">
@@ -91,6 +91,6 @@
 
 <div id="tip" class="tip" role="status" hidden></div>
 <script src="vendor/ethers.umd.min.js?v=532950515f"></script>
-<script src="app.js?v=f2507b4c63"></script>
+<script src="app.js?v=19e68fb313"></script>
 </body>
 </html>

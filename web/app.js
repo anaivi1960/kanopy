@@ -45,6 +45,9 @@
     tip.style.top = (ev.clientY + pad + h > window.innerHeight ? ev.clientY - h - pad : ev.clientY + pad) + "px";
   }
   const hideTip = () => { tip.hidden = true; };
+  const spin = () => el("span", { class: "spin", "aria-hidden": "true" });
+  const spinner = (text) => el("div", { class: "loading", role: "status" }, spin(), text);
+  const reading = (text) => el("span", { class: "reading", role: "status" }, spin(), text);
 
   // ── theme: dark unless the viewer switches to light; the choice is remembered ─
   const SUN = '<circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/>';
@@ -66,21 +69,7 @@
   // ── start ────────────────────────────────────────────────────────────────
   async function start() {
     S.index = await getJson("data/index.json");
-    try {
-      S.dep = await getJson("deployment.json");
-      const provider = new ethers.JsonRpcProvider(S.dep.rpcUrl, S.dep.chainId, { staticNetwork: true });
-      S.reg = new ethers.Contract(S.dep.address, S.dep.abi, provider);
-      await S.reg.reserveCount();
-      const where = `${S.dep.network} (chain ${S.dep.chainId})`;
-      const addr = S.dep.explorer
-        ? el("a", { href: `${S.dep.explorer.replace(/\/$/, "")}/address/${S.dep.address}`, style: "color:inherit" }, short(S.dep.address))
-        : el("b", {}, short(S.dep.address));
-      $("net").replaceChildren("Registry ", addr, ` on ${where}`);
-      $("foot-contract").textContent = `Registry contract ${S.dep.address} on ${where}.`;
-    } catch (e) {
-      S.reg = null;
-      $("net").textContent = S.dep ? `Registry unreachable at ${S.dep.rpcUrl}` : "No registry deployment found";
-    }
+    S.ready = connect();
     $("tabs").replaceChildren(
       ...S.index.map((r) => el("button", { type: "button", "data-key": r.key, "aria-pressed": "false", onclick: () => select(r.key) }, r.name)),
     );
@@ -90,9 +79,50 @@
     await select(S.index.some((r) => r.key === wanted) ? wanted : S.index[0].key);
   }
 
+  // Runs alongside the first file load: the page draws the measurement while the chain answers.
+  async function connect() {
+    try {
+      S.dep = await getJson("deployment.json");
+    } catch (e) {
+      S.reg = null;
+      $("net").textContent = "No registry deployment found";
+      return;
+    }
+    try {
+      const provider = new ethers.JsonRpcProvider(S.dep.rpcUrl, S.dep.chainId, { staticNetwork: true });
+      const reg = new ethers.Contract(S.dep.address, S.dep.abi, provider);
+      await reg.reserveCount();
+      S.reg = reg;
+      const where = `${S.dep.network} (chain ${S.dep.chainId})`;
+      const addr = S.dep.explorer
+        ? el("a", { href: `${S.dep.explorer.replace(/\/$/, "")}/address/${S.dep.address}`, style: "color:inherit" }, short(S.dep.address))
+        : el("b", {}, short(S.dep.address));
+      $("net").replaceChildren("Registry ", addr, ` on ${where}`);
+      $("foot-contract").textContent = `Registry contract ${S.dep.address} on ${where}.`;
+    } catch (e) {
+      S.reg = null;
+      $("net").textContent = `Registry unreachable at ${S.dep.rpcUrl}`;
+    }
+  }
+
+  function showLoading() {
+    $("tiles").replaceChildren(spinner("Loading the measurement…"));
+    $("bars").replaceChildren(spinner("Loading the chart…"));
+    $("map").replaceChildren(spinner("Loading the map…"));
+    $("legend").replaceChildren();
+    $("checks").tBodies[0].replaceChildren(el("tr", {}, el("td", { colspan: 4 }, spinner("Loading the fingerprints…"))));
+    $("verdict").replaceChildren(reading("Loading…"));
+    $("claim").replaceChildren(spinner("Loading…"));
+  }
+
   async function select(key) {
     S.key = key;
+    const token = (S.token = (S.token || 0) + 1); // a later tab click makes this load stale
     for (const b of $("tabs").children) b.setAttribute("aria-pressed", String(b.dataset.key === key));
+    $("tamper").hidden = true;
+    $("restore").hidden = true;
+    $("tamper-note").hidden = true;
+    showLoading();
     const base = `data/${key}/`;
     const [statsBuf, manifest, cells] = await Promise.all([
       fetch(base + "stats.json", { cache: "no-store" }).then((r) => r.arrayBuffer()),
@@ -100,16 +130,19 @@
       getJson(base + "cells.json"),
     ]);
     const rows = cells.rows.map(([lat, word, mask]) => ({ lat, word, mask: BigInt(mask) }));
-    const cur = { key, manifest, cells, rows, statsBytes: new Uint8Array(statsBuf), tampered: null, chain: null };
+    if (token !== S.token) return;
+    const cur = { key, manifest, cells, rows, statsBytes: new Uint8Array(statsBuf), tampered: null, chain: null, pending: true };
     cur.stats = JSON.parse(new TextDecoder().decode(cur.statsBytes));
-    if (S.reg) cur.chain = await readChain(manifest, rows).catch((e) => ({ error: e.shortMessage || e.message }));
     S.cur = cur;
-    $("tamper").hidden = false;
-    $("restore").hidden = true;
-    $("tamper-note").hidden = true;
     const note = $("note");
     note.hidden = !manifest.synthetic;
     note.textContent = manifest.synthetic ? `Test area. ${manifest.boundary_note}` : "";
+    await render(); // the measurement now; the registry's side fills in when it answers
+    await S.ready;
+    if (S.reg) cur.chain = await readChain(manifest, rows).catch((e) => ({ error: e.shortMessage || e.message }));
+    if (token !== S.token) return;
+    cur.pending = false;
+    $("tamper").hidden = false;
     await render();
   }
 
@@ -123,13 +156,12 @@
       S.reg.claimedMasks(year, rows),
       S.reg.claimCount(),
     ]);
-    const claims = [];
-    for (let k = 0n; k < n; k++) {
-      const c = await S.reg.getClaim(k);
-      if (Number(c.year) !== year) continue;
-      if (!S.names.has(c.reserveId)) S.names.set(c.reserveId, (await S.reg.reserves(c.reserveId)).name);
-      claims.push({ id: Number(k), reserveId: c.reserveId, name: S.names.get(c.reserveId), cells: Number(c.cellCount), version: Number(c.baselineVersion), at: c.claimedAt, by: c.claimant });
-    }
+    // every claim, then every unnamed claimant, each in one parallel round trip
+    const all = (await Promise.all(Array.from({ length: Number(n) }, (_, k) => S.reg.getClaim(k))))
+      .map((c, k) => ({ k, c })).filter(({ c }) => Number(c.year) === year);
+    const unnamed = [...new Set(all.map(({ c }) => c.reserveId))].filter((i) => !S.names.has(i));
+    (await Promise.all(unnamed.map((i) => S.reg.reserves(i)))).forEach((r, k) => S.names.set(unnamed[k], r.name));
+    const claims = all.map(({ k, c }) => ({ id: k, reserveId: c.reserveId, name: S.names.get(c.reserveId), cells: Number(c.cellCount), version: Number(c.baselineVersion), at: c.claimedAt, by: c.claimant }));
     const taken = new Set();
     rows.forEach((r, k) => {
       for (let b = 0n; b < 256n; b++) if ((masks[k] >> b) & 1n) taken.add(`${r.lat}:${r.word * 256 + Number(b)}`);
@@ -202,7 +234,7 @@
       const x = (j - j0) * u, y = (i1 - i) * u, bin = LOSS_BINS.filter((b) => loss >= b).length;
       const other = taken.has(`${i}:${j}`) && !own;
       const lat = (i + 0.5) / 100 - 90, lon = (j + 0.5) / 100 - 180;
-      const status = !c.chain || c.chain.error ? "Registry not read" : own ? `Counted for ${c.chain.year} by this area` : other ? `Counted for ${c.chain.year} by another project` : `Not counted for ${c.chain.year}`;
+      const status = c.pending ? "Reading the registry…" : !c.chain || c.chain.error ? "Registry not read" : own ? `Counted for ${c.chain.year} by this area` : other ? `Counted for ${c.chain.year} by another project` : `Not counted for ${c.chain.year}`;
       svg.append(el("rect", { class: "cell", x, y, width: u, height: u, style: `fill:var(--l${bin})`,
         onmousemove: (ev) => showTip(ev, `Cell ${i}:${j}`, [`${lat.toFixed(3)}° N, ${lon.toFixed(3)}° E`, `${loss}% lost since 2001, ${recent}% since 2021`, status]),
         onmouseleave: hideTip }));
@@ -215,7 +247,7 @@
     const ramp = el("span", { class: "ramp" }, "Share of cell lost since 2001: ", el("span", {}, "under 1%"),
       ...[0, 1, 2, 3, 4].map((b) => el("i", { style: `background:var(--l${b})` })), el("span", {}, "30% and over"));
     const key = nTaken ? [el("span", {}, el("i", { class: "k-taken" }), `Counted for ${c.chain.year} by another project (${fmt(nTaken)} cells)`)] : [];
-    $("legend").replaceChildren(ramp, ...key);
+    $("legend").replaceChildren(ramp, ...key, ...(c.pending ? [reading("Reading claims from the registry…")] : []));
   }
 
   async function renderChecks(c, s) {
@@ -234,6 +266,11 @@
     ];
     let bad = 0;
     const body = rows.map(([name, what, how, mine, theirs]) => {
+      if (c.pending) {
+        return el("tr", {}, el("td", {}, name), el("td", {}, what, el("span", { class: "how" }, how)),
+          el("td", { class: "hash" }, reading("Reading the registry…"), el("code", { class: "how" }, `this file: ${mine}`)),
+          el("td", {}, reading("Checking")));
+      }
       const ok = theirs ? mine === theirs : null;
       if (ok === false) bad++;
       const st = ok === null ? ["na", "Not compared"] : ok ? ["ok", "Match"] : ["no", "Mismatch"];
@@ -243,7 +280,8 @@
     });
     $("checks").tBodies[0].replaceChildren(...body);
     const v = $("verdict");
-    if (!ch) v.replaceChildren(el("span", { class: "st na" }, "Not compared"), c.chain && c.chain.error ? c.chain.error : "No registry could be read, so the fingerprints are shown without a comparison.");
+    if (c.pending) v.replaceChildren(reading("Comparing these fingerprints with the registry…"));
+    else if (!ch) v.replaceChildren(el("span", { class: "st na" }, "Not compared"), c.chain && c.chain.error ? c.chain.error : "No registry could be read, so the fingerprints are shown without a comparison.");
     else if (bad) v.replaceChildren(el("span", { class: "st no" }, "Mismatch"), `${bad} of ${rows.length} fingerprints do not match the registry.`);
     else v.replaceChildren(el("span", { class: "st ok" }, "Match"), `All ${rows.length} fingerprints match baseline version ${ch.reserve.baselineCount}, attested ${when(ch.baseline.attestedAt)}.`);
   }
@@ -266,6 +304,7 @@
 
   function renderClaim(c) {
     const box = $("claim"), ch = c.chain;
+    if (c.pending) return box.replaceChildren(spinner("Reading claims from the registry…"));
     if (!ch || ch.error) return box.replaceChildren(el("p", {}, ch ? ch.error : "No registry could be read."));
     const total = c.cells.cell_count, year = ch.year, others = ch.claims.filter((x) => x.reserveId !== ch.id);
     const out = el("div", { hidden: true });
