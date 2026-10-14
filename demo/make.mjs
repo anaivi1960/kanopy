@@ -325,7 +325,7 @@ fs.writeFileSync(path.join(BUILD, "captions.srt"), srt.join("\n"));
 ff(["-f", "concat", "-safe", "0", "-i", "parts.txt", "-c", "copy", "joined.mp4"]);
 const style = "FontName=Segoe UI,FontSize=11,PrimaryColour=&H00FFFFFF,OutlineColour=&H40000000,BorderStyle=3,Outline=7,Shadow=0,MarginV=14,MarginL=40,MarginR=40";
 ff(["-i", "joined.mp4", "-vf", `subtitles=captions.srt:force_style='${style}'`, "-c:v", "libx264", "-preset", "medium", "-crf", "19",
-  "-c:a", "copy", "-movflags", "+faststart", path.join(OUT, "kanopy-demo.mp4")]);
+  "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", "48000", "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", path.join(OUT, "kanopy-demo.mp4")]);
 ff(["-i", path.join(OUT, "kanopy-demo.mp4"), "-c:v", "copy", "-an", "-movflags", "+faststart", path.join(OUT, "kanopy-demo-silent.mp4")]);
 fs.writeFileSync(path.join(OUT, "narration.txt"), S.map((s) => `[${s.n} ${s.id}]\n${s.text}\n`).join("\n"));
 fs.copyFileSync(path.join(BUILD, "captions.srt"), path.join(OUT, "kanopy-demo.srt"));
